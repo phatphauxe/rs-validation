@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const URL = "https://qa.api.republicservices.com/container/v1/products/R-L-OT-AG-0100/prices?segment=Environmental&accountType=T&infoProDivision=551&industryCode=622000&marketRate=75&isCustomerOwned=false&routeFormat=I&zipCode=60153&disposalCost=75&isOnCall=true&customerType=New&lawsonDivision=4551&suggestedRate=true&sellType=leased&timeForService=40&competitorCode=NEW&wasteCode=RCY&leasedComponents=DEL&routeType=RO&serviceType=New"
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -24,21 +22,21 @@ class App extends Component {
   }
 
   orderJson = (data) => {
-    let result = `"lookup""value"\n`;
+    let result = `"lookup"\t"value"\n`;
     if(data.price){
         data.price.forEach(p => {
             let code = p.code;
             p.priceLineItems.forEach(li => {
                 let pt = li.priceType;
-                result += `"${code}|${pt}|listPrice"`; 
+                result += `"${code}|${pt}|listPrice"\t`; 
                 result += `"${Number(""+li.listPrice+"")}"\n`
 
-                result += `"${code}|${pt}|cost" "${Number(""+li.cost+"")}"\n`
+                result += `"${code}|${pt}|cost"\t"${Number(""+li.cost+"")}"\n`
                 if(li.discounts){
                   if(li.discounts[0] !== null){
                     li.discounts.forEach(dc => {
                         if(dc.discountType){
-                            result += `"${code}|${pt}|${dc.discountType} ${dc.qualifier ? '|'+Number(""+dc.qualifier+"")+'|':''} 'NA'" "${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue:  Number(""+dc.discountValue+"")}"\n`;
+                            result += `"${code}|${pt}${dc.discountType}${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
                         }
                     });
                   }
@@ -50,16 +48,16 @@ class App extends Component {
         let keys = Object.keys(data.fees);
         keys.forEach(f => {
             if(isNaN(data.fees[f])){
-                result += `"FEE|${f}" "${data.fees[f]}"\n`;
+                result += `"FEE|${f}"\t"${data.fees[f]}"\n`;
             }
             else {
-                result += `"FEE|${f}" "${Number(""+data.fees[f]+"")}"\n`;
+                result += `"FEE|${f}"\t"${Number(""+data.fees[f]+"")}"\n`;
             }
         }); 
     }
     if(data.rates){
         data.rates.forEach(r => {
-            result += `"SRR|${r.serviceCode}" "${Number(""+r.serviceCharge+"")}"\n`
+            result += `"SRR|${r.serviceCode}"\t"${Number(""+r.serviceCharge+"")}"\n`
         })
     }
     this.setState({stringData: result}, () => {
