@@ -36,7 +36,7 @@ class App extends Component {
                   if(li.discounts[0] !== null){
                     li.discounts.forEach(dc => {
                         if(dc.discountType){
-                            result += `"${code}|${pt}|${dc.discountType}|${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
+                            result += `"${code}|${pt}|${dc.discountType}${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
                         }
                     });
                   }
