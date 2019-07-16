@@ -36,7 +36,7 @@ class App extends Component {
                   if(li.discounts[0] !== null){
                     li.discounts.forEach(dc => {
                         if(dc.discountType){
-                            result += `"${code}|${pt}${dc.discountType}${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
+                            result += `"${code}|${pt}|${dc.discountType}|${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
                         }
                     });
                   }
@@ -62,8 +62,14 @@ class App extends Component {
     }
     this.setState({stringData: result}, () => {
       let response = document.querySelector('#stringData');
+      let listener = (e) => {
+        e.clipboardData.setData('text/plain', result);
+        e.preventDefault();
+      }
       response.select();
+      document.addEventListener('copy', listener);
       document.execCommand('copy');
+      document.removeEventListener('copy', listener);
     })
 }
   
