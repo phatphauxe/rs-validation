@@ -7,12 +7,12 @@ const jsonParser = bodyParser.json();
 const HEADERS = {
     "sourceSystemTimeStamp": "2017-11-29T23:00:00.000-00:00",
     "exceptionNotificationEmailAddress": "A@B.com",
-    "apiKey": "sf9e7qpdwdrfkvz6cy28c6qv",
+    "Api-Key": "kfsajjwnxx6dba34mb55t4zg",
     "sourceSystemTransactionID": "1",
-    "sourceApplicationName": "BC",
+    "sourceApplicationName": "callidus",
     "Connection": "Keep-Alive",
     "User-Agent": "Apache-HttpClient/4.5.2 (Java/1.8.0_144)",
-    "Host": "qa.api.republicservices.com",
+    "Host": "stg.api.republicservices.com",
     "Accept-Encoding": "gzip,deflate",
     "Content-Length": 0
 }

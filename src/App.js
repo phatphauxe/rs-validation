@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -16,6 +15,7 @@ class App extends Component {
       fetch("/getData", {body: JSON.stringify({url:url}), method:'POST', headers: {"Content-Type":"application/json"}}).then(response => {
           return response.json()
       }).then(json => {
+        console.log(json.response.body);
         this.orderJson(JSON.parse(json.response.body));
         this.setState({jsonData: json.response.body});
       });
@@ -33,7 +33,7 @@ class App extends Component {
 
                 result += `"${code}|${pt}|cost"\t"${Number(""+li.cost+"")}"\n`
                 if(li.discounts){
-                  if(li.discounts[0] !== null){
+                  if(li.discounts[0] !== null || li.discounts[0] !== ""){
                     li.discounts.forEach(dc => {
                         if(dc.discountType){
                             result += `"${code}|${pt}|${dc.discountType}${dc.qualifier ? '|'+Number(""+dc.qualifier+""):''}|NA"\t"${isNaN(Number(""+dc.discountValue+"")) ? dc.discountValue: Number(""+dc.discountValue+"")}"\n`;
@@ -84,7 +84,7 @@ class App extends Component {
           <div> <input id='urlInput' type='text' value={this.state.urlInput} onChange={this.changeUpdate}/> <button onClick={this.getByUrl} disabled={this.state.urlInput === ''}>Submit</button></div>
           <div style={{display:'flex', flexDirection: 'row', width:'1000px', margin: 'auto', height: '90vh'}}>
               <div style={{width: '50%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'}}>
-                  <label>JSON SUBMITTION</label>
+                  <label>JSON</label>
                   <textarea id='jsonData' style={{height:'85%'}} value={this.state.jsonData} onChange={this.changeUpdate}></textarea>
                   
               </div>
